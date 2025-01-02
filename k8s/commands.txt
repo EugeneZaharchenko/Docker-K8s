@@ -1,0 +1,5 @@
+kind https://kind.sigs.k8s.io/docs/user/quick-start/#installing-with-a-package-manager
+config: C:\Users\<name>\.kube\config
+kind create cluster --name k8s-course
+kubectl get nodes
+kubectl get pods --all-namespaces
