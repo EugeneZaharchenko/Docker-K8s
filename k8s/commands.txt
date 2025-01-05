@@ -3,3 +3,27 @@ config: C:\Users\<name>\.kube\config
 kind create cluster --name k8s-course
 kubectl get nodes
 kubectl get pods --all-namespaces
+
+kubectl [flags] [options]
+alias k=kubectl (linux)
+set-alias k kubectl (win)
+k get services | namespaces | deployments
+k get services --namespace kube-system
+k create ns my-namespace
+k create deployment my-website --image=nginx --port=80 --replicas=3 --namespace my-namespace
+k get deployments -n my-namespace
+k expose deployment my-website --port=80 -n my-namespace -> localhost:8080
+
+# List all contexts
+k config get-contexts
+
+# Switch context
+k config use-context my-context
+
+# Check current context
+k config current-context
+
+# Set namespace for current context
+k config set-context --current --namespace=my-namespace -> no need to specify namespace for commands
+
+GUI: https://k9scli.io/topics/install/
