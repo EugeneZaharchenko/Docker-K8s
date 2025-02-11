@@ -62,17 +62,17 @@ app.get("/people", async (req, res) => {
 app.listen(3000, () => {
   console.log("Server is running on port 3000");
 });
-// Local mongo connection
-// async function connectToDatabase() {
-//   try {
-//     await mongoose.connect("mongodb://host.docker.internal:27017/swfavorites", {
-//       useNewUrlParser: true,
-//       useUnifiedTopology: true,
-//     });
-//     console.log("Connected to MongoDB");
-//   } catch (error) {
-//     console.error("Error connecting to MongoDB:", error);
-//   }
-// }
+async function connectToDatabase() {
+  try {
+    // await mongoose.connect("mongodb://host.docker.internal:27017/swfavorites", // Local mongo connection
+    await mongoose.connect("mongodb://mongodb:27017/swfavorites", {
+      useNewUrlParser: true,
+      useUnifiedTopology: true,
+    });
+    console.log("Connected to MongoDB");
+  } catch (error) {
+    console.error("Error connecting to MongoDB:", error);
+  }
+}
 
 connectToDatabase();

@@ -1,3 +1,13 @@
 docker build -t node-network .
 docker run --name node-net-app --rm -p 3000:3000 node-network
-localhost -> host.docker.internal (call from container to host)
+
+localhost -> host.docker.internal (call from container to host) mongoose.connect("mongodb://host.docker.internal:27017/"
+app container -> mongo container: mongoose.connect("mongodb://host.docker.internal:27017/"
+
+docker run -d --name mongodb mongo
+
+***Network***
+docker run -d --name mongodb --network favorites-net mongo (docker run -d --name mongodb --network favorites-net mongo)
+docker network create favorites-net
+docker build -t favorites-i .
+docker run --name favorites-app --network favorites-net --rm -p 3000:3000 favorites-i
