@@ -85,7 +85,7 @@ app.delete("/goals/:id", async (req, res) => {
 
 const connectDB = async () => {
   try {
-    await mongoose.connect("mongodb://localhost:27017/course-goals", {
+    await mongoose.connect("mongodb://172.17.0.2:27017/course-goals", {
       useNewUrlParser: true,
       useUnifiedTopology: true,
     });

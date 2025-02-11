@@ -1,0 +1,6 @@
+docker build -t goals-node .
+docker run --name goals-be --rm -d -p 3033:3033 goals-node
+
+***FE***
+docker build -t goals-react .
+docker run --name goals-fe --rm -it -p 3000:3000 goals-react
