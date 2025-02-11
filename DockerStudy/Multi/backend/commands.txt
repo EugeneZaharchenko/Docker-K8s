@@ -1,6 +1,17 @@
+***DB***
+docker run --name mongodb-app --rm -d -p 27017:27017 mongo
+
+***BE***
 docker build -t goals-node .
 docker run --name goals-be --rm -d -p 3033:3033 goals-node
 
 ***FE***
 docker build -t goals-react .
 docker run --name goals-fe --rm -it -p 3000:3000 goals-react
+
+***Network***
+docker network create goals-nt
+docker run --name mongodb-app --rm -d --network goals-nt mongo
+docker run --name goals-be --rm -d --network goals-nt -p 3033:3033 goals-node
+docker run --name goals-fe --rm -it --network goals-nt goals-react - NOT WORKING!!!
+docker run --name goals-fe --rm -it --network goals-nt -p 3000:3000 goals-react - USE THIS!

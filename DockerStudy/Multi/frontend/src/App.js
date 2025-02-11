@@ -4,7 +4,10 @@ import GoalInput from "./components/goals/GoalInput";
 import CourseGoals from "./components/goals/CourseGoals";
 import ErrorAlert from "./components/UI/ErrorAlert";
 
+// eslint-disable-next-line
 const PORT = 3033;
+// const HOST = "goals-be" || "localhost";
+const HOST = "localhost";
 
 function App() {
   const [loadedGoals, setLoadedGoals] = useState([]);
@@ -16,7 +19,7 @@ function App() {
       setIsLoading(true);
 
       try {
-        const response = await fetch(`http://localhost:${PORT}/goals`);
+        const response = await fetch(`http://${HOST}:${PORT}/goals`);
 
         const resData = await response.json();
 
@@ -41,7 +44,7 @@ function App() {
     setIsLoading(true);
 
     try {
-      const response = await fetch(`http://localhost:${PORT}/goals`, {
+      const response = await fetch(`http://${HOST}:${PORT}/goals`, {
         method: "POST",
         body: JSON.stringify({
           text: goalText,
@@ -80,7 +83,7 @@ function App() {
     setIsLoading(true);
 
     try {
-      const response = await fetch(`http://localhost:${PORT}/goals` + goalId, {
+      const response = await fetch(`http://${HOST}:${PORT}/goals` + goalId, {
         method: "DELETE",
       });
 
