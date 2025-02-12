@@ -4,13 +4,17 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "nodemon app.js"
   },
-  "author": "Eugene Z",
+  "author": "Eugene Zah",
   "dependencies": {
     "express": "^4.18.2",
     "mongoose": "^8.1.0",
     "morgan": "^1.10.0"
+  },
+  "devDependencies": {
+    "nodemon": "^2.0.7"
   },
   "engines": {
     "node": ">=18.0.0"

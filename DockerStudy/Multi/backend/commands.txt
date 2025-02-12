@@ -15,3 +15,9 @@ docker run --name mongodb-app --rm -d --network goals-nt mongo
 docker run --name goals-be --rm -d --network goals-nt -p 3033:3033 goals-node
 docker run --name goals-fe --rm -it --network goals-nt goals-react - NOT WORKING!!!
 docker run --name goals-fe --rm -it --network goals-nt -p 3000:3000 goals-react - USE THIS!
+
+***Volumes***
+docker run --name mongodb-app -v data:/data/db --rm -d --network goals-nt -e MONGO_INITDB_ROOT_USERNAME=eugene -e MONGO_INITDB_ROOT_PASSWORD=asssword -e MONGO_INITDB_DATABASE=course-goals mongo
+docker run --name goals-be -v /home/user/VSCodeProjects/DockerStudy/Multi/backend:/app -v logs:/app/logs -v /app/node_modules --network goals-nt --rm -p 3033:3033 goals-node
+docker run --name goals-be -v /home/user/VSCodeProjects/DockerStudy/Multi/backend:/app -v logs:/app/logs -v /app/node_modules --network goals-nt -e MONGO_USERNAME=eugene -e MONGO_PASSWORD=asssword --rm -p 3033:3033 goals-node
+docker run -v /home/user/VSCodeProjects/DockerStudy/Multi/frontend/src:/app/src --name goals-fe --rm -it --network goals-nt -p 3000:3000 goals-react

@@ -16,6 +16,9 @@ COPY . .
 # Expose the port the app runs on
 EXPOSE 3033
 
+ENV MONGO_USERNAME=root
+ENV MONGO_PASSWORD=secret
+
 # Define the command to run the application
-CMD ["node", "app.js"]
+CMD ["npm", "start"]
 
