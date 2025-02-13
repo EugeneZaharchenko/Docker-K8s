@@ -1,0 +1,43 @@
+services:
+  mongodb:
+    image: mongo
+    container_name: mongodb
+    volumes:
+      - data:/data/db
+    # environment:
+    #   MONGO_INITDB_ROOT_PASSWORD: asssword
+    # - MONGO_INITDB_ROOT_USERNAME=eugene
+    env_file:
+      - ./env/mongo.env
+    ports:
+      - "27017:27017"
+    # networks:
+    #   - goals-nt
+  backend:
+    build: ./backend
+    container_name: goals-be
+    ports:
+      - "3033:3033"
+    depends_on:
+      - mongodb
+    volumes:
+      - ./backend:/app
+      - logs:/app/logs
+      - /app/node_modules
+    env_file:
+      - ./env/be.env
+  frontend:
+    build: ./frontend
+    container_name: goals-fe
+    ports:
+      - "3000:3000"
+    depends_on:
+      - backend
+    volumes:
+      - ./frontend/src:/app/src
+    stdin_open: true
+    tty: true
+
+volumes:
+  data:
+  logs:
