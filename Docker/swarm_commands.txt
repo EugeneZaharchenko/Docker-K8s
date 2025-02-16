@@ -1,0 +1,12 @@
+docker swarm init
+docker swarm leave
+# docker swarm leave --force
+docker node ls
+docker service create --name="redis-cache" --replicas 3 redis:latest
+docker service ls
+docker service ps redis-cache
+docker service logs redis-cache
+docker service scale redis-cache=5
+docker service rm redis-cache
+docker stack deploy --compose-file docker-stack.ynl py-hello-app
+docker stack rm py-hello-app
