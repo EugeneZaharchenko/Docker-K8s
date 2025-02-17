@@ -1,0 +1,18 @@
+{
+  "name": "mynpm-test",
+  "version": "1.0.0",
+  "description": "Test utils container",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "EugeneZ",
+  "license": "ISC",
+  "keywords": [
+    "mynpm"
+  ],
+  "dependencies": {
+    "express": "^4.21.2"
+  },
+  "devDependencies": {}
+}
