@@ -1,0 +1,11 @@
+docker run -it -v /home/user/VSCodeProjects/DockerStudy/Utilities:/app node-util npm init
+
+docker build -t mynpm .
+docker run -it -v /home/user/VSCodeProjects/DockerStudy/Utilities:/app mynpm init
+docker-compose run --rm npm init
+
+docker-compose run --rm composer create-project --prefer-dist laravel/laravel .
+docker-compose up --build -d server php mysql
+
+docker-compose up --build -d server php mysql artisan
+docker-compose run --rm artisan migrate
