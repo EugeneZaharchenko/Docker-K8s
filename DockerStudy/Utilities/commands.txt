@@ -9,3 +9,9 @@ docker-compose up --build -d server php mysql
 
 docker-compose up --build -d server php mysql artisan
 docker-compose run --rm artisan migrate
+
+docker build -t dep-to-aws .
+docker tag dep-to-aws j0nnyz/deploy-to-aws
+docker push j0nnyz/deploy-to-aws
+To refresh: sudo docker pull j0nnyz/deploy-to-aws
+sudo docker run -d --rm -p 80:80 j0nnyz/deploy-to-aws
