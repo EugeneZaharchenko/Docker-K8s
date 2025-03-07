@@ -1,4 +1,4 @@
-FROM node
+FROM node:23-alpine3.20
 
 WORKDIR /app
 
@@ -8,9 +8,13 @@ RUN npm install
 
 COPY . .
 
-EXPOSE 80
+RUN addgroup -S appgroup && adduser -S appuser -G appgroup
+USER appuser
+EXPOSE 3000
 
-ENV MONGODB_USERNAME=root
-ENV MONGODB_PASSWORD=secret
+ENV MONGO_USERNAME=admin
+ENV MONGO_PASSWORD=asssword
+ENV MONGO_HOST=localhost
+ENV MONGO_DATABASE=goals-dev
 
 CMD ["npm", "start"]

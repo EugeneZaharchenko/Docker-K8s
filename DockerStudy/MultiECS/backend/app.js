@@ -1,22 +1,18 @@
-const fs = require('fs');
-const path = require('path');
-
 const express = require('express');
 const mongoose = require('mongoose');
 const cors = require('cors');
-
 const Goal = require('./models/goal');
 
 const app = express();
-const PORT = process.env.PORT || 80;
+const PORT = process.env.PORT || 3000;
 
 // Middleware
-app.use(express.json()); // Replaces body-parser which is now built into Express
+app.use(express.json());
 app.use(cors({
   origin: '*',
   methods: ['GET', 'POST', 'DELETE', 'OPTIONS'],
   allowedHeaders: ['Content-Type']
-})); // Replaces manual CORS setup
+}));
 
 // Route handlers
 app.get('/goals', async (req, res) => {
@@ -31,8 +27,7 @@ app.get('/goals', async (req, res) => {
     });
     console.log('FETCHED GOALS');
   } catch (err) {
-    console.error('ERROR FETCHING GOALS');
-    console.error(err.message);
+    console.error('ERROR FETCHING GOALS:', err.message);
     res.status(500).json({ message: 'Failed to load goals.' });
   }
 });
@@ -46,19 +41,14 @@ app.post('/goals', async (req, res) => {
     return res.status(422).json({ message: 'Invalid goal text.' });
   }
 
-  const goal = new Goal({
-    text: goalText,
-  });
+  const goal = new Goal({ text: goalText });
 
   try {
     await goal.save();
-    res
-      .status(201)
-      .json({ message: 'Goal saved', goal: { id: goal.id, text: goalText } });
+    res.status(201).json({ message: 'Goal saved', goal: { id: goal.id, text: goalText } });
     console.log('STORED NEW GOAL');
   } catch (err) {
-    console.error('ERROR STORING GOAL');
-    console.error(err.message);
+    console.error('ERROR STORING GOAL:', err.message);
     res.status(500).json({ message: 'Failed to save goal.' });
   }
 });
@@ -70,22 +60,34 @@ app.delete('/goals/:id', async (req, res) => {
     res.status(200).json({ message: 'Deleted goal!' });
     console.log('DELETED GOAL');
   } catch (err) {
-    console.error('ERROR DELETING GOAL');
-    console.error(err.message);
+    console.error('ERROR DELETING GOAL:', err.message);
     res.status(500).json({ message: 'Failed to delete goal.' });
   }
 });
 
-// MongoDB connection - modern approach with async/await
+// MongoDB connection
 const startServer = async () => {
   try {
-    // Build connection string
-    const mongoURI = `mongodb://${process.env.MONGODB_USERNAME}:${process.env.MONGODB_PASSWORD}@${
-      process.env.MONGODB_HOST || 'localhost'
-    }:${process.env.MONGODB_PORT || '27017'}/course-goals?authSource=admin`;
+    // Validate environment variables
+    const mongoHost = process.env.MONGO_HOST;
+    const mongoUsername = process.env.MONGO_USERNAME;
+    const mongoPassword = process.env.MONGO_PASSWORD;
+    const mongoDb = process.env.MONGO_DATABASE;
 
-    // Connect to MongoDB
-    await mongoose.connect(mongoURI);
+    if (!mongoHost || !mongoUsername || !mongoPassword) {
+      throw new Error('Missing required environment variables for MongoDB connection.');
+    }
+
+    const mongoURI = `mongodb+srv://${mongoUsername}:${mongoPassword}@${mongoHost}/${mongoDb}?retryWrites=true&w=majority&appName=DockerAWStudy`;
+    // const mongoURI = `mongodb://${mongoUsername}:${mongoPassword}@${mongoHost}:27017/course-goals?authSource=admin`;
+
+    console.log('Attempting to connect to MongoDB...');
+    await mongoose.connect(mongoURI, {
+      useNewUrlParser: true,
+      useUnifiedTopology: true,
+      serverSelectionTimeoutMS: 5000, // 5-second timeout
+    });
+
     console.log('CONNECTED TO MONGODB!!');
 
     // Start the server only after successful database connection
@@ -93,11 +95,13 @@ const startServer = async () => {
       console.log(`Server running on port ${PORT}`);
     });
   } catch (err) {
-    console.error('FAILED TO CONNECT TO MONGODB');
-    console.error(err);
-    process.exit(1); // Exit with failure
+    console.error('FAILED TO CONNECT TO MONGODB:', err.message);
+    process.exit(1); // Exit the process if the database connection fails
   }
 };
 
-// Initialize the server
-startServer();
+// Start the server
+startServer().catch(err => {
+  console.error('Failed to start the server:', err.message);
+  process.exit(1);
+});
